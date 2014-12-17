@@ -1,19 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.1-b419 (branches/2.3.1.x-7937; 2014-08-04T08:11:03+0000) JAXWS-RI/2.2.10-b140803.1500 JAXWS-API/2.2.11 JAXB-RI/2.2.10-b140802.1033 JAXB-API/2.2.12-b140109.1041 svn-revision#unknown. --><xs:schema xmlns:tns="http://service.rulebaseservice.dk/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://service.rulebaseservice.dk/">
 
-<xs:element name="chooseAppropriateBanks" type="tns:chooseAppropriateBanks"/>
+<xs:element name="getAppropriateBanks" type="tns:getAppropriateBanks"/>
 
-<xs:element name="chooseAppropriateBanksResponse" type="tns:chooseAppropriateBanksResponse"/>
+<xs:element name="getAppropriateBanksResponse" type="tns:getAppropriateBanksResponse"/>
 
-<xs:complexType name="chooseAppropriateBanks">
+<xs:complexType name="getAppropriateBanks">
 <xs:sequence>
-<xs:element name="ssn" type="xs:string" minOccurs="0"/>
-<xs:element name="loanAmount" type="xs:double"/>
-<xs:element name="loanDuration" type="xs:int"/>
 <xs:element name="creditScore" type="xs:int"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="chooseAppropriateBanksResponse">
+<xs:complexType name="getAppropriateBanksResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>

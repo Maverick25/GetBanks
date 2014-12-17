@@ -4,21 +4,21 @@
 <xsd:import namespace="http://service.rulebaseservice.dk/" schemaLocation="http://localhost:8080/RuleBaseService/RuleBaseService?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="chooseAppropriateBanks">
-<part name="parameters" element="tns:chooseAppropriateBanks"/>
+<message name="getAppropriateBanks">
+<part name="parameters" element="tns:getAppropriateBanks"/>
 </message>
-<message name="chooseAppropriateBanksResponse">
-<part name="parameters" element="tns:chooseAppropriateBanksResponse"/>
+<message name="getAppropriateBanksResponse">
+<part name="parameters" element="tns:getAppropriateBanksResponse"/>
 </message>
 <portType name="RuleBaseService">
-<operation name="chooseAppropriateBanks">
-<input wsam:Action="http://service.rulebaseservice.dk/RuleBaseService/chooseAppropriateBanksRequest" message="tns:chooseAppropriateBanks"/>
-<output wsam:Action="http://service.rulebaseservice.dk/RuleBaseService/chooseAppropriateBanksResponse" message="tns:chooseAppropriateBanksResponse"/>
+<operation name="getAppropriateBanks">
+<input wsam:Action="http://service.rulebaseservice.dk/RuleBaseService/getAppropriateBanksRequest" message="tns:getAppropriateBanks"/>
+<output wsam:Action="http://service.rulebaseservice.dk/RuleBaseService/getAppropriateBanksResponse" message="tns:getAppropriateBanksResponse"/>
 </operation>
 </portType>
 <binding name="RuleBaseServicePortBinding" type="tns:RuleBaseService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="chooseAppropriateBanks">
+<operation name="getAppropriateBanks">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

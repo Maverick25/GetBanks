@@ -6,13 +6,18 @@
 package dk.getbanks.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.QueueingConsumer;
+import dk.getbanks.dto.ComplexMessageDTO;
 import dk.getbanks.dto.LoanRequestDTO;
 import dk.getbanks.messaging.Receive;
 import dk.getbanks.messaging.Send;
+import dk.rulebaseservice.service.RuleBaseService_Service;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -32,6 +37,7 @@ public class ChooseTheBanks
         Channel channel = (Channel) objects.get("channel");
         
         LoanRequestDTO loanRequestDTO;
+        List<String> selectedBanks;
         
         while (true) 
         {
@@ -40,23 +46,25 @@ public class ChooseTheBanks
           
           loanRequestDTO = gson.fromJson(message, LoanRequestDTO.class);
           
-//          CreditScoreService_Service service = new CreditScoreService_Service();
-//          int creditScore = service.getCreditScoreServicePort().creditScore(loanRequestDTO.getSsn());
-//          
-//          loanRequestDTO.setCreditScore(creditScore);
-//          
+          RuleBaseService_Service service = new RuleBaseService_Service();
+          selectedBanks = service.getRuleBaseServicePort().getAppropriateBanks(loanRequestDTO.getCreditScore());
+          
           System.out.println(loanRequestDTO.toString());
-//          
-//          sendMessage(loanRequestDTO);
+          
+          sendMessage(loanRequestDTO, selectedBanks);
 
           channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
         }
         
     }
     
-    public static void sendMessage(LoanRequestDTO dto) throws IOException
+    public static void sendMessage(LoanRequestDTO dto, List<String> selectedBanks) throws IOException
     {
-        String message = gson.toJson(dto);
+        ComplexMessageDTO messageDTO = new ComplexMessageDTO(dto, selectedBanks);
+        
+        String message = gson.toJson(messageDTO);
+        
+        System.out.println(message);
         
         Send.sendMessage(message);
     }
