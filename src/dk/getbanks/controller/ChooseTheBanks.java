@@ -7,6 +7,7 @@ package dk.getbanks.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.QueueingConsumer;
 import dk.getbanks.dto.ComplexMessageDTO;
@@ -43,7 +44,10 @@ public class ChooseTheBanks
         {
           QueueingConsumer.Delivery delivery = consumer.nextDelivery();
           String message = new String(delivery.getBody());
-          
+          AMQP.BasicProperties props = delivery.getProperties();
+          AMQP.BasicProperties replyProps = new AMQP.BasicProperties.Builder().correlationId(props.getCorrelationId()).replyTo(props.getReplyTo()).build();
+            System.out.println(props.getCorrelationId());
+            System.out.println(props.getReplyTo());
           loanRequestDTO = gson.fromJson(message, LoanRequestDTO.class);
           
           RuleBaseService_Service service = new RuleBaseService_Service();
