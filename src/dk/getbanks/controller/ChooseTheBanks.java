@@ -45,7 +45,7 @@ public class ChooseTheBanks
           QueueingConsumer.Delivery delivery = consumer.nextDelivery();
           String message = new String(delivery.getBody());
           AMQP.BasicProperties props = delivery.getProperties();
-          AMQP.BasicProperties replyProps = new AMQP.BasicProperties.Builder().correlationId(props.getCorrelationId()).replyTo(props.getReplyTo()).build();
+          AMQP.BasicProperties replyProps = new AMQP.BasicProperties.Builder().correlationId(props.getCorrelationId()).build();
             System.out.println(props.getCorrelationId());
             System.out.println(props.getReplyTo());
           loanRequestDTO = gson.fromJson(message, LoanRequestDTO.class);
@@ -55,21 +55,21 @@ public class ChooseTheBanks
           
           System.out.println(loanRequestDTO.toString());
           
-          sendMessage(loanRequestDTO, selectedBanks);
+          sendMessage(loanRequestDTO, selectedBanks, replyProps);
 
           channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
         }
         
     }
     
-    public static void sendMessage(LoanRequestDTO dto, List<String> selectedBanks) throws IOException
+    public static void sendMessage(LoanRequestDTO dto, List<String> selectedBanks, AMQP.BasicProperties props) throws IOException
     {
         ComplexMessageDTO messageDTO = new ComplexMessageDTO(dto, selectedBanks);
         
         String message = gson.toJson(messageDTO);
         
-        System.out.println(message);
+        System.out.println("JSONcm: " +message);
         
-        Send.sendMessage(message);
+        Send.sendMessage(message, props);
     }
 }
